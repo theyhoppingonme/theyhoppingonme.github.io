@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TD2D Cheats List</title>
+    <style>
+/* ==============================================
+   RESET & BASE STYLES
+   ============================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  min-height: 100vh;
+  padding: 20px;
+  color: #333;
+}
+
+/* ==============================================
+   LAYOUT COMPONENTS
+   ============================================== */
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.content {
+  padding: 40px;
+}
+
+.footer {
+  padding: 30px;
+  background: #f8f9fa;
+  color: #6c757d;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+/* ==============================================
+   HEADER SECTION
+   ============================================== */
+
+.header {
+  position: relative;
+  padding: 40px;
+  background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+  color: white;
+  text-align: center;
+  overflow: hidden;
+}
+
+.header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(255, 255, 255, 0.05) 10px,
+    rgba(255, 255, 255, 0.05) 20px
+  );
+  animation: slide 20s linear infinite;
+}
+
+.header h1 {
+  position: relative;
+  z-index: 1;
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.header p {
+  position: relative;
+  z-index: 1;
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* ==============================================
+   CATEGORY SECTIONS
+   ============================================== */
+
+.category {
+  margin-bottom: 40px;
+  padding: 30px;
+  background: white;
+  border-radius: 15px;
+  border-left: 5px solid;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.category h2 {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* Category Colors */
+.category.op { border-left-color: #e74c3c; }
+.category.visual { border-left-color: #3498db; }
+.category.movement { border-left-color: #2ecc71; }
+.category.gameplay { border-left-color: #f39c12; }
+.category.audio { border-left-color: #9b59b6; }
+.category.utility { border-left-color: #1abc9c; }
+.category.exploit { border-left-color: #e67e22; }
+
+/* ==============================================
+   CATEGORY ICONS
+   ============================================== */
+
+.category-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.op .category-icon { background: #e74c3c; }
+.visual .category-icon { background: #3498db; }
+.movement .category-icon { background: #2ecc71; }
+.gameplay .category-icon { background: #f39c12; }
+.audio .category-icon { background: #9b59b6; }
+.utility .category-icon { background: #1abc9c; }
+.exploit .category-icon { background: #e67e22; }
+
+/* ==============================================
+   CHEAT ITEMS
+   ============================================== */
+
+.cheat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  gap: 20px;
+}
+
+.cheat-item {
+  position: relative;
+  padding: 20px;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border: 1px solid #dee2e6;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.cheat-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.5s ease;
+}
+
+.cheat-item:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.cheat-item:hover::before {
+  left: 100%;
+}
+
+.cheat-name {
+  margin-bottom: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+.cheat-key {
+  display: inline-block;
+  margin-right: 10px;
+  padding: 6px 12px;
+  background: linear-gradient(135deg, #34495e, #2c3e50);
+  color: white;
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.cheat-description {
+  color: #6c757d;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+/* ==============================================
+   WARNING COMPONENT
+   ============================================== */
+
+.warning {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  padding: 15px;
+  background: linear-gradient(135deg, #fff3cd, #ffeaa7);
+  border: 1px solid #ffeaa7;
+  border-radius: 10px;
+  color: #856404;
+}
+
+.warning-icon {
+  font-size: 1.5rem;
+}
+
+/* ==============================================
+   ANIMATIONS
+   ============================================== */
+
+@keyframes slide {
+  0% { 
+    transform: translateX(-50px) translateY(-50px); 
+  }
+  100% { 
+    transform: translateX(0px) translateY(0px); 
+  }
+}
+
+/* ==============================================
+   RESPONSIVE DESIGN
+   ============================================== */
+
+@media (max-width: 768px) {
+  .header h1 {
+    font-size: 2rem;
+  }
+  
+  .content {
+    padding: 20px;
+  }
+  
+  .category {
+    padding: 20px;
+  }
+  
+  .cheat-grid {
+    grid-template-columns: 1fr;
+  }
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎮 TD2D Cheat List</h1>
+            <p>Complete collection of hacks and cheats organized by category</p>
+        </div>
+
+        <div class="content">
+            <div class="warning">
+                <span class="warning-icon">⚠️</span>
+                <div>
+                    <strong>Important:</strong> Do not shoot as Demonized Tails when using F7 toggle - it will crash your game due to anti-cheat detection.
+                </div>
+            </div>
+
+            <div class="category op">
+                <h2>
+                    <div class="category-icon">💀</div>
+                    Overpowered Cheats
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Kill All (EXE Mode)</div>
+                        <div class="cheat-key">Divide</div>
+                        <div class="cheat-description">Instantly eliminates all players when in EXE mode</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Kill Closest Player (EXE)</div>
+                        <div class="cheat-key">M</div>
+                        <div class="cheat-description">Targets and eliminates the nearest player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam Hit EXE</div>
+                        <div class="cheat-key">F (Hold)</div>
+                        <div class="cheat-description">Rapidly attacks with EXE abilities</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Full Invincibility</div>
+                        <div class="cheat-key">0</div>
+                        <div class="cheat-description">Complete protection from all attacks</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Crash All Players</div>
+                        <div class="cheat-key">F11</div>
+                        <div class="cheat-description">Forces all connected players to crash</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category visual">
+                <h2>
+                    <div class="category-icon">✨</div>
+                    Visual Effects
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Fill Screen with Exetiors Balls</div>
+                        <div class="cheat-key">F9</div>
+                        <div class="cheat-description">Spawns EXE orbs across the entire screen</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Sally Shield Screen Fill</div>
+                        <div class="cheat-key">F6</div>
+                        <div class="cheat-description">Covers screen with Demonized Sally's shields</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Blood Aura Effect</div>
+                        <div class="cheat-key">T</div>
+                        <div class="cheat-description">Adds a menacing blood aura around your character</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Purple Effect Aura</div>
+                        <div class="cheat-key">5</div>
+                        <div class="cheat-description">Creates a mystical purple aura effect</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spinning Donut Effect</div>
+                        <div class="cheat-key">P (Hold)</div>
+                        <div class="cheat-description">Generates a spinning donut around your character</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Character Trail (SS)</div>
+                        <div class="cheat-key">End</div>
+                        <div class="cheat-description">Leaves a trail to your player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Color Palette Change (SS)</div>
+                        <div class="cheat-key">F5</div>
+                        <div class="cheat-description">Changes the player Palette</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="category movement">
+                <h2>
+                    <div class="category-icon">🚀</div>
+                    Movement & Teleportation
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Teleport Movement</div>
+                        <div class="cheat-key">WASD</div>
+                        <div class="cheat-description">Instantly teleport in any direction</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Teleport to Player</div>
+                        <div class="cheat-key">Q</div>
+                        <div class="cheat-description">Instantly teleport to stalked player (within 280 units)</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Creative Mode Flight</div>
+                        <div class="cheat-key">V</div>
+                        <div class="cheat-description">Enables creative mode with enhanced movement</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Super Speed</div>
+                        <div class="cheat-key">Shift + Arrows</div>
+                        <div class="cheat-description">Move at incredibly high speeds</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Walk on Air</div>
+                        <div class="cheat-key">Space (Hold)</div>
+                        <div class="cheat-description">Enables air walking with no vertical movement</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spin Player (Mid-Air)</div>
+                        <div class="cheat-key">8</div>
+                        <div class="cheat-description">Rotates player when airborne with no Y movement</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Freeze Movement</div>
+                        <div class="cheat-key">K</div>
+                        <div class="cheat-description">Completely stops all character animation movement</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Lock Direction Right</div>
+                        <div class="cheat-key">F2</div>
+                        <div class="cheat-description">Forces character to face right continuously</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="category gameplay">
+                <h2>
+                    <div class="category-icon">🎯</div>
+                    Gameplay Modifications
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">69 Rings</div>
+                        <div class="cheat-key">F12</div>
+                        <div class="cheat-description">Instantly gets 69 rings</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Collect All Rings Repeatedly</div>
+                        <div class="cheat-key">+</div>
+                        <div class="cheat-description">Automatically collects all rings on the map</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Collect All Shards</div>
+                        <div class="cheat-key">Page Down</div>
+                        <div class="cheat-description">Gathers all available shards in ravine mist instantly</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Toggle Health (0/100)</div>
+                        <div class="cheat-key">G</div>
+                        <div class="cheat-description">Switches between 0 HP and 100 HP</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Hide Damaging Rings</div>
+                        <div class="cheat-key">7</div>
+                        <div class="cheat-description">Makes harmful rings invisible</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Sally Movement & Special</div>
+                        <div class="cheat-key">L</div>
+                        <div class="cheat-description">Grants Sally's movement abilities to any character</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Anti-EXE Invisibility</div>
+                        <div class="cheat-key">H</div>
+                        <div class="cheat-description">See EXE even if they are invisible</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Fake Death</div>
+                        <div class="cheat-key">Home</div>
+                        <div class="cheat-description">Simulate death animation without actually dying</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category audio">
+                <h2>
+                    <div class="category-icon">🔊</div>
+                    Audio Effects
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam Sounds</div>
+                        <div class="cheat-key">N</div>
+                        <div class="cheat-description">Rapidly plays random sound effects</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Collision Sound Spammer</div>
+                        <div class="cheat-key">9</div>
+                        <div class="cheat-description">Continuously plays collision sound effects</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam "Sucks to be you" Voice</div>
+                        <div class="cheat-key">Y</div>
+                        <div class="cheat-description">Repeatedly plays the taunting voice line of Exetior</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category utility">
+                <h2>
+                    <div class="category-icon">🛠️</div>
+                    Utility & Support
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Stalk Player</div>
+                        <div class="cheat-key">O</div>
+                        <div class="cheat-description">Track and follow a target player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Steal Information</div>
+                        <div class="cheat-key">E (While Stalking)</div>
+                        <div class="cheat-description">Extract data from the stalked player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Heal Target Player</div>
+                        <div class="cheat-key">Page Up</div>
+                        <div class="cheat-description">Restore all health to the currently stalked player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Auto Heal (Touch)</div>
+                        <div class="cheat-key">F8</div>
+                        <div class="cheat-description">Automatically heals anyone you touch</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Heal Everyone</div>
+                        <div class="cheat-key">Numpad 8</div>
+                        <div class="cheat-description">Restores health to all players (requires 69 rings)</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Teleport Closest Player to Cursor</div>
+                        <div class="cheat-key">U (Hold)</div>
+                        <div class="cheat-description">Moves nearest player to mouse position (Client Side)</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Escape Anywhere</div>
+                        <div class="cheat-key">F4</div>
+                        <div class="cheat-description">Instantly escape from any situation or location</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="category exploit">
+                <h2>
+                    <div class="category-icon">⚡</div>
+                    Level-Specific Exploits
+                </h2>
+                <div class="cheat-grid">
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam Random Projectiles</div>
+                        <div class="cheat-key">F1</div>
+                        <div class="cheat-description">Rapidly fires various projectile types</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Demonized Toggle</div>
+                        <div class="cheat-key">F7</div>
+                        <div class="cheat-description">Transform into Demonized form (avoid shooting as Tails!)</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spaz Practice Mode Doll</div>
+                        <div class="cheat-key">Numpad 6</div>
+                        <div class="cheat-description">Flings the Practice Mode doll</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Kill Blobs in Ravine Mist</div>
+                        <div class="cheat-key">Numpad 5</div>
+                        <div class="cheat-description">Repeatedly eliminates blob enemies in Ravine</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam Springs (Hide & Seek)</div>
+                        <div class="cheat-key">Numpad 4</div>
+                        <div class="cheat-description">Spams the Hide and Seek spring sound effect</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Destroy Dark Tower Spikes</div>
+                        <div class="cheat-key">Numpad 2</div>
+                        <div class="cheat-description">Instantly destroys spikes when touching warning signs</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Break All Vases</div>
+                        <div class="cheat-key">F10</div>
+                        <div class="cheat-description">Shatters all destructible vases on Volcano Valley</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Spam Doors (Haunted Dream)</div>
+                        <div class="cheat-key">Numpad 1</div>
+                        <div class="cheat-description">Opens and closes Haunted Dream Doors</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Explode Boxes (Kind & Fair)</div>
+                        <div class="cheat-key">Numpad 7</div>
+                        <div class="cheat-description">Detonates all boxes in Kind and Fair level</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">PC Crash Warning + Mermer (SS)</div>
+                        <div class="cheat-key">Numpad 0</div>
+                        <div class="cheat-description">Displays crash warning and transforms into Mermer</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Sally Shield Spam</div>
+                        <div class="cheat-key">B</div>
+                        <div class="cheat-description">Rapidly deploys Demonized Sally shields as any character</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Annoy Closest Player</div>
+                        <div class="cheat-key">I</div>
+                        <div class="cheat-description">Activates annoying effects on the nearest player</div>
+                    </div>
+                    <div class="cheat-item">
+                        <div class="cheat-name">Inappropriate Content</div>
+                        <div class="cheat-key">Multiply, F3, J</div>
+                        <div class="cheat-description">Various inappropriate text and content spawners</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>⚠️ Use these cheats responsibly and be mindful of other players' experiences ⚠️</p>
+            <p>Last updated: June 2025</p>
+        </div>
+    </div>
+</body>
+</html>
