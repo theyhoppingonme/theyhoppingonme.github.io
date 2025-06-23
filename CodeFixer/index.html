@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Code Fixer</title>
+  <link href="prism/prism-tomorrow.css" rel="stylesheet">
+  <link href="local/styles.css" rel="stylesheet">
+  <link href="local/backcircles.css" rel="stylesheet">
+</head>
+<body>
+
+  <div class="container">
+    <h2>Code Fixer</h2>
+    <textarea id="inputCode" placeholder='Type your JS code with "quotes" here...'></textarea>
+    <p>Converted & Highlighted Output:</p>
+    <pre><code id="highlightedCode" class="language-js"></code></pre>
+
+    <p class="error" id="errorOutput"></p>
+  </div>
+
+  <!-- Prism.js -->
+  <script src="prism/prism.js"></script>
+  <script src="prism/prism-javascript.min.js"></script>
+
+  <script src="local/script.js"></script>
+</body>
+</html>
