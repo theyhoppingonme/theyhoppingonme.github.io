@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Destiny Key Generator</title>
+  <style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #333;
+  overflow: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.1) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: white;
+  text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  animation: slideInFromTop 1s ease-out 0.3s forwards;
+}
+
+button {
+  padding: 16px 32px;
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  color: white;
+  border-radius: 50px;
+  cursor: pointer;
+  box-shadow: 0 8px 32px rgba(79, 172, 254, 0.4);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  animation: slideInFromBottom 1s ease-out 0.6s forwards;
+}
+
+button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 48px rgba(79, 172, 254, 0.6);
+}
+
+button:hover::before {
+  left: 100%;
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 16px rgba(79, 172, 254, 0.4);
+}
+
+#key {
+  font-size: 28px;
+  font-weight: 600;
+  font-family: 'Courier New', monospace;
+  margin-top: 3rem;
+  color: #2d3748;
+  padding: 24px 32px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.1);
+  min-width: 400px;
+  text-align: center;
+  letter-spacing: 2px;
+  opacity: 0;
+  animation: slideInFromBottom 1s ease-out 0.9s forwards;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+#key:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.15);
+}
+
+@keyframes slideInFromTop {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes keyGenerate {
+  0% {
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  50% {
+    transform: scale(1.05);
+    background: rgba(79, 172, 254, 0.1);
+  }
+  100% {
+    transform: scale(1);
+    background: rgba(255, 255, 255, 0.95);
+  }
+}
+
+.key-generating {
+  animation: keyGenerate 0.6s ease-in-out;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  
+  #key {
+    font-size: 20px;
+    min-width: 320px;
+    padding: 20px 24px;
+  }
+  
+  button {
+    font-size: 16px;
+    padding: 14px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  #key {
+    font-size: 18px;
+    min-width: 280px;
+    padding: 16px 20px;
+    letter-spacing: 1px;
+  }
+}
+  </style>
+</head>
+<body>
+
+  <h1>DestinyKeyGen</h1>
+  <button id="generateBtn">Generate Key</button>
+  <div id="key">DESTINY-XXXXXX-XXXXXX-XXXXXX</div>
+
+  <script>
+    (function () {
+      const button = document.getElementById('generateBtn');
+      const keyDisplay = document.getElementById('key');
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+      function generateSegment(length) {
+        let result = '';
+        for (let i = 0; i < length; i++) {
+          result += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        return result;
+      }
+
+      function generateKey() {
+        return 'DESTINY-' + generateSegment(6) + '-' + generateSegment(6) + '-' + generateSegment(6);
+        fetch('/Key')
+      }
+
+      button.addEventListener('click', function () {
+        keyDisplay.textContent = generateKey();
+      });
+    })();
+  </script>
+
+</body>
+</html>
