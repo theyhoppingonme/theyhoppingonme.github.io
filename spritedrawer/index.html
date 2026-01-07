@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GM Visual Sandbox</title>
+    <title>Td2d drawer thingy</title>
     <style>
         :root {
             --bg-color: #1e1e1e;
@@ -199,7 +199,7 @@
     </div>
 
     <div class="control-group" style="flex-grow: 1; display: flex; flex-direction: column;">
-        <h3>GameMaker GML IO</h3>
+        <h3>gml compiler</h3>
         <div style="margin-bottom: 5px;">
             <button id="btn-compile">Compile</button>
             <button id="btn-import">Import Code</button>
@@ -517,7 +517,7 @@ function updateSelectionUI() {
 }
 
 /**
- * GML COMPILER & PARSER
+ * compiler
  */
 function compileGML() {
     let output = "";
@@ -568,7 +568,7 @@ function importGML() {
 }
 
 /**
- * JSON SAVE/LOAD
+ * jeeson
  */
 function saveJSON() {
     const data = {
