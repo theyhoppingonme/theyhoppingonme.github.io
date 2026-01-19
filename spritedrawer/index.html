@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Td2d drawer thingy</title>
+    <title>Td2d Drawer</title>
     <style>
         :root {
             --bg-color: #1e1e1e;
@@ -144,18 +144,6 @@
             position: relative;
         }
 
-        #resize-handle {
-            position: absolute;
-            bottom: -5px;
-            right: -5px;
-            width: 15px;
-            height: 15px;
-            background: var(--accent-color);
-            cursor: se-resize;
-            border-radius: 50%;
-            z-index: 100;
-        }
-
     </style>
 </head>
 <body>
@@ -204,7 +192,7 @@
             <button id="btn-compile">Compile</button>
             <button id="btn-import">Import Code</button>
         </div>
-        <textarea id="code-io" placeholder="Paste net_quick_effect lines here to import, or click Compile to generate..."></textarea>
+        <textarea id="code-io" placeholder="Paste GML code here to import..."></textarea>
     </div>
 </div>
 
@@ -238,7 +226,7 @@ const state = {
     selection: null, 
     isDragging: false,
     dragStart: { x: 0, y: 0 },
-    dragMode: null // 'pan', 'move'
+    dragMode: null 
 };
 
 const uid = () => Date.now().toString(36) + Math.random().toString(36).substr(2);
@@ -256,14 +244,14 @@ const inpHeight = document.getElementById('inp-height');
 function init() {
     SPRITE_NAMES.forEach(name => {
         const img = new Image();
+        // Assumes images are in a folder named 'sprites' relative to this html
         img.src = `sprites/${name}.png`;
         img.onload = () => {
             imagesLoadedCount++;
             if(imagesLoadedCount === SPRITE_NAMES.length) render();
         };
-
         img.onerror = () => { 
-            console.error(`Missing sprite: ${name}`);
+            console.warn(`Missing sprite: ${name}`);
             imagesLoadedCount++;
         };
         IMAGES[name] = img;
@@ -298,6 +286,7 @@ function resizeCanvas() {
 }
 
 function render() {
+    // Background
     ctx.fillStyle = "#222";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -306,39 +295,44 @@ function render() {
     const cx = canvas.width / 2;
     const cy = canvas.height / 2;
 
+    // Camera Transform
     ctx.translate(cx, cy);
     ctx.scale(state.camera.zoom, state.camera.zoom);
     ctx.translate(-cx, -cy);
     ctx.translate(state.camera.x, state.camera.y);
 
-    ctx.beginPath();
-    ctx.strokeStyle = "#444";
-    ctx.lineWidth = 1 / state.camera.zoom;
-    // Draw grid relative to center (0,0) logic
+    // Grid (Crosshair)
     const originX = cx; 
     const originY = cy;
     
+    ctx.beginPath();
+    ctx.strokeStyle = "#444";
+    ctx.lineWidth = 1 / state.camera.zoom;
     ctx.moveTo(originX - 10000, originY);
     ctx.lineTo(originX + 10000, originY);
     ctx.moveTo(originX, originY - 10000);
     ctx.lineTo(originX, originY + 10000);
     ctx.stroke();
 
+    // Instances
     state.instances.forEach(inst => {
         const img = IMAGES[inst.sprite];
         if(!img || !img.complete) return;
 
         ctx.save();
-        const drawX = originX + inst.x;
-        const drawY = originY + inst.y;
+        // Round to integer for clean rendering to fix centering visual issues
+        const drawX = Math.round(originX + inst.x);
+        const drawY = Math.round(originY + inst.y);
 
         ctx.translate(drawX, drawY);
-        
         ctx.scale(inst.xscale, 1);
 
+        // Draw sprite centered
         ctx.drawImage(img, -img.width/2, -img.height/2);
 
+        // Selection Box
         if (state.selection === inst.id) {
+            // Restore scale to draw box normally, but calculate width based on scale
             ctx.scale(1/inst.xscale, 1);
             
             const w = img.width * Math.abs(inst.xscale);
@@ -346,6 +340,7 @@ function render() {
             
             ctx.strokeStyle = "#00ff00";
             ctx.lineWidth = 2 / state.camera.zoom;
+            // Ensure box is drawn perfectly around the potentially scaled sprite
             ctx.strokeRect(-w/2, -h/2, w, h);
         }
 
@@ -396,6 +391,7 @@ function setupEvents() {
         const mPos = screenToWorld(e.offsetX, e.offsetY);
         
         let clickedId = null;
+        // Hit detection (reverse order to click top-most)
         for (let i = state.instances.length - 1; i >= 0; i--) {
             const inst = state.instances[i];
             const img = IMAGES[inst.sprite];
@@ -413,13 +409,16 @@ function setupEvents() {
             state.selection = clickedId;
             updateSelectionUI();
             state.dragMode = 'move';
-            state.dragStart = { mx: mPos.x, my: mPos.y, ix: state.instances.find(i=>i.id===clickedId).x, iy: state.instances.find(i=>i.id===clickedId).y };
+            // Snap drag start to current integer position
+            const inst = state.instances.find(i=>i.id===clickedId);
+            state.dragStart = { mx: mPos.x, my: mPos.y, ix: inst.x, iy: inst.y };
         } else {
+            // New Instance
             const newInst = {
                 id: uid(),
                 sprite: state.activeSprite,
-                x: mPos.x,
-                y: mPos.y,
+                x: Math.round(mPos.x), // Initial snap
+                y: Math.round(mPos.y),
                 xscale: 1
             };
             state.instances.push(newInst);
@@ -447,6 +446,7 @@ function setupEvents() {
             if (inst) {
                 const dx = mPos.x - state.dragStart.mx;
                 const dy = mPos.y - state.dragStart.my;
+                // Move freely, but we round in render and UI
                 inst.x = state.dragStart.ix + dx;
                 inst.y = state.dragStart.iy + dy;
                 updateSelectionUI();
@@ -456,6 +456,16 @@ function setupEvents() {
     });
 
     window.addEventListener('mouseup', () => {
+        // Upon release, snap the internal data to integer to prevent drift
+        if(state.selection) {
+            const inst = state.instances.find(i => i.id === state.selection);
+            if(inst) {
+                inst.x = Math.round(inst.x);
+                inst.y = Math.round(inst.y);
+                updateSelectionUI();
+                render();
+            }
+        }
         state.isDragging = false;
         state.dragMode = null;
     });
@@ -489,11 +499,8 @@ function setupEvents() {
 
     inpWidth.addEventListener('change', resizeCanvas);
     inpHeight.addEventListener('change', resizeCanvas);
-
     document.getElementById('btn-compile').addEventListener('click', compileGML);
-    
     document.getElementById('btn-import').addEventListener('click', importGML);
-
     document.getElementById('btn-save').addEventListener('click', saveJSON);
     document.getElementById('btn-load-trigger').addEventListener('click', () => document.getElementById('file-input').click());
     document.getElementById('file-input').addEventListener('change', loadJSON);
@@ -505,6 +512,7 @@ function updateSelectionUI() {
         selectionControls.style.opacity = 1;
         selectionControls.style.pointerEvents = 'auto';
         document.getElementById('sel-sprite-name').innerText = inst.sprite;
+        // Display strictly integers
         document.getElementById('sel-pos').innerText = `${Math.round(inst.x)}, ${Math.round(inst.y)}`;
         inpXScale.value = inst.xscale;
     } else {
@@ -517,24 +525,28 @@ function updateSelectionUI() {
 }
 
 /**
- * compiler
+ * COMPILER (FIXED)
  */
 function compileGML() {
-    let output = "";
+    // 1. Start with the required variable declaration
+    let output = "var obj = global.player;\n";
+    
     state.instances.forEach(inst => {
-        // net_quick_effect(global.player.x + x_pos, global.player.y + y_pos, sprite, false, x_scale, 0, 0, 0);
-        const xPos = Number(inst.x.toFixed(2));
-        const yPos = Number(inst.y.toFixed(2));
+        // 2. Force integers for coordinates
+        const xPos = Math.round(inst.x);
+        const yPos = Math.round(inst.y);
         const xSc = Number(inst.xscale);
         
-        output += `net_quick_effect(global.player.x + ${xPos}, global.player.y + ${yPos}, ${inst.sprite}, false, ${xSc}, 0, 0, 0);\n`;
+        // 3. Use obj.x / obj.y format
+        output += `net_quick_effect(obj.x + ${xPos}, obj.y + ${yPos}, ${inst.sprite}, false, ${xSc}, 0, 0, 0);\n`;
     });
     codeIO.value = output.trim();
 }
 
 function importGML() {
     const code = codeIO.value;
-    const regex = /net_quick_effect\(global\.player\.x \+ ([\d\.-]+), global\.player\.y \+ ([\d\.-]+), ([a-zA-Z0-9_]+), false, ([\d\.-]+), 0, 0, 0\);/g;
+    // Updated Regex to handle "obj.x + val" and integer/decimal variations
+    const regex = /net_quick_effect\(obj\.x \+ ([\d\.-]+), obj\.y \+ ([\d\.-]+), ([a-zA-Z0-9_]+), false, ([\d\.-]+), 0, 0, 0\);/g;
     
     let match;
     const newInstances = [];
@@ -549,7 +561,7 @@ function importGML() {
             newInstances.push({
                 id: uid(),
                 sprite: sprite,
-                x: x,
+                x: x, 
                 y: y,
                 xscale: xscale
             });
@@ -563,12 +575,12 @@ function importGML() {
         render();
         alert(`Imported ${newInstances.length} instances.`);
     } else {
-        alert("No valid code found or parsing failed.");
+        alert("No valid lines found. Ensure format matches: net_quick_effect(obj.x + ...)");
     }
 }
 
 /**
- * jeeson
+ * JSON IO
  */
 function saveJSON() {
     const data = {
@@ -577,8 +589,8 @@ function saveJSON() {
         zoom: state.camera.zoom,
         instances: state.instances.map(i => ({
             sprite: i.sprite,
-            x: i.x,
-            y: i.y,
+            x: Math.round(i.x), // Save as int
+            y: Math.round(i.y),
             xscale: i.xscale
         }))
     };
@@ -599,15 +611,12 @@ function loadJSON(e) {
     reader.onload = function(evt) {
         try {
             const data = JSON.parse(evt.target.result);
-            
             if(data.canvasWidth) {
                 inpWidth.value = data.canvasWidth;
                 inpHeight.value = data.canvasHeight;
                 resizeCanvas();
             }
-            
             if(data.zoom) state.camera.zoom = data.zoom;
-            
             if(data.instances) {
                 state.instances = data.instances.map(i => ({
                     id: uid(),
@@ -617,7 +626,6 @@ function loadJSON(e) {
                     xscale: i.xscale
                 }));
             }
-            
             state.selection = null;
             updateSelectionUI();
             render();
