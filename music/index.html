@@ -685,7 +685,6 @@ html, body {
       <div class="setRow"><div class="setLabel">Glow Intensity</div><div class="rWrap"><input type="range" id="rGlow" min="0" max="2.5" step="0.1" value="1.0"><span class="rVal" id="vGlow">1.0</span></div></div>
       <div class="setRow"><div class="setLabel">Audio Sensitivity</div><div class="rWrap"><input type="range" id="rSens" min="0.2" max="2.5" step="0.1" value="1.0"><span class="rVal" id="vSens">1.0</span></div></div>
       <div class="setRow"><div class="setLabel">Ribbon Count</div><div class="rWrap"><input type="range" id="rRibb" min="3" max="14" step="1" value="8"><span class="rVal" id="vRibb">8</span></div></div>
-      <div class="setRow"><div><div class="setLabel">Floating Thoughts</div></div><div class="tog on" id="togThoughts" onclick="togSet(this,'thoughts')"></div></div>
     </div>
     <div class="setSection">
       <h3>Playback</h3>
@@ -701,7 +700,7 @@ html, body {
 
 
 var cfg={
-sceneRot:true,sceneDur:32000,glowIntensity:1.0,sensitivity:1.0,numRibbons:8,thoughts:true,loop:true,shuffle:false};
+sceneRot:true,sceneDur:32000,glowIntensity:1.0,sensitivity:1.0,numRibbons:8,thoughts:false,loop:true,shuffle:false};
 
 var ST={
 playlist:[],idx:-1,playing:false,inVis:false,sceneIdx:0,selectedIdx:0};
@@ -2121,7 +2120,6 @@ else{
 curScene.update(dt);
 curScene.draw();
 }
-updateThoughts(dt);
 }
 requestAnimationFrame(frame);
 }
@@ -2146,34 +2144,6 @@ ST.inVis=false;
 document.getElementById('vis').style.display='none';
 document.getElementById('app').style.display='flex';
 stopVis();
-}
-
-var thoughts=['you are made of stardust','the universe is 13.8 billion years old','light from a distant star is passing through you right now','you have about 30,000 days','this moment will never exist again','somewhere it is always midnight','you are here','the music knows something you don\'t','enjoy this','there is no purpose. that\'s the point.','you are allowed to just exist','you were young once. you still are.','the distance between stars is mostly silence','nothing that matters is permanent','the universe spent 13 billion years making you','all your ancestors survived long enough to love someone','time is not passing. you are.','the atoms in your left hand came from a different star than your right'];
-
-var thTimer=15000,thShow=false;
-
-function updateThoughts(dt){
-if(!cfg.thoughts)return;
-thTimer-=dt;
-
-if(thTimer<=0&&!thShow){
-thShow=true;
-thTimer=50000+Math.random()*40000;
-var el=document.getElementById('visThought'),W=vc.width,H=vc.height;
-el.style.left=(W*0.08+Math.random()*W*0.6)+'px';
-el.style.top=(H*0.18+Math.random()*H*0.55)+'px';
-el.textContent=thoughts[Math.floor(Math.random()*thoughts.length)];
-el.style.opacity='0';
-setTimeout(function(){
-el.style.opacity='0.3';
-},100);
-setTimeout(function(){
-el.style.opacity='0';
-setTimeout(function(){
-thShow=false;
-},2600);
-},7000);
-}
 }
 
 var ovTimer,visEl=document.getElementById('vis'),ovEl=document.getElementById('visOverlay');
